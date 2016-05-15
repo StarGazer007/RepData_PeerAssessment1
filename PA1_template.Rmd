@@ -4,11 +4,55 @@ output:
   html_document:
     keep_md: true
 ---
+author: "Lisa Rodgers"
+date: "May 9, 2016"
+output: html_document
+---
+
+#Analysis of personal activity monitoring device data
+
+-----
+
+
+##Introduction
+
+It is now possible to collect a large amount of data about personal movement using activity monitoring devices such as a Fitbit, Nike Fuelband, or Jawbone Up. These type of devices are part of the “quantified self” movement – a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. But these data remain under-utilized both because the raw data are hard to obtain and there is a lack of statistical methods and software for processing and interpreting the data.
+
+In this report we make use of data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day. Data was provided for the course students for this particular assignment, avaliable to download via this link (avaliable at 2014-05-25).
+
+In the report, we try to answer the following questions:
+
+* What is mean total number of steps taken per day?
+* What is the average daily activity pattern?
+* Are there differences in activity patterns between weekdays and weekends?
 
 
 ## Loading and preprocessing the data
+##### 1. Load the data (i.e. read.csv())
+
+Load the necessary libraries
+
+```{r}
+library(ggplot2)
+```
 
 
+```{r}
+if(!file.exists('activity.csv')){
+    unzip('activity.zip')
+}
+activityData <- read.csv('activity.csv', header = TRUE, sep = ",", na.strings = "NA")
+```
+
+##### 2. Process/transform the data (if necessary) into a format suitable for your analysis
+Convert the “date” variable to a Date class and the “interval” variable to a factor
+
+```{r}
+activityData$date <- as.Date(activityData$date, format = "%Y-%m-%d")
+activityData$interval <- factor(activityData$interval)
+```
+
+-----
 
 ## What is mean total number of steps taken per day?
 
