@@ -6,7 +6,7 @@ output:
 
 author: "Lisa Rodgers"
 date: "May 9, 2016"
-output: html_document
+output: Project_1.html
 ---
 
 #Analysis of personal activity monitoring device data
