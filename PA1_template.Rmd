@@ -4,6 +4,7 @@ output:
   html_document:
     keep_md: true
 ---
+
 author: "Lisa Rodgers"
 date: "May 9, 2016"
 output: html_document
@@ -27,43 +28,216 @@ In the report, we try to answer the following questions:
 * Are there differences in activity patterns between weekdays and weekends?
 
 
+-----
+
 ## Loading and preprocessing the data
-##### 1. Load the data (i.e. read.csv())
+
+-----
+
+1. Load the data (i.e. read.csv())
 
 Load the necessary libraries
 
-```{r}
+```{r loadLibrary}
 library(ggplot2)
 ```
 
 
-```{r}
+```{r loadFiles}
 if(!file.exists('activity.csv')){
     unzip('activity.zip')
 }
 activityData <- read.csv('activity.csv', header = TRUE, sep = ",", na.strings = "NA")
 ```
 
+
+
+
+Looking at a summary for the dataset using “summary” and “str” methods:
+
+```{r summaryData}
+summary(activityData)
+```
+
+```{r DataStructure}
+str(activityData)
+```
+
+```{r TopofData}
+head(activityData)
+```
+
+```{r BottomofData}
+tail(activityData)
+```
+
 ##### 2. Process/transform the data (if necessary) into a format suitable for your analysis
 Convert the “date” variable to a Date class and the “interval” variable to a factor
 
-```{r}
+```{r ConvertDate}
 activityData$date <- as.Date(activityData$date, format = "%Y-%m-%d")
 activityData$interval <- factor(activityData$interval)
 ```
 
 -----
 
-## What is mean total number of steps taken per day?
+### What is mean total number of steps taken per day?
+
+-----
+
+1 - Subsetting the dataset to ignore missing values
+
+
+```{r RemoveNulls}
+NA_index <- is.na(as.character(activityData$steps))
+activityData_noNull<- activityData[!NA_index,]
+head(activityData_noNull)
+```
 
 
 
-## What is the average daily activity pattern?
+2 - Aggregating the number of steps taken each day
+
+Creating a data frame with the steps taken for each day
+
+```{r AggregateData}
+steps_each_day <- aggregate(steps ~ date, data = activityData_noNull, sum)
+```
+
+Adding column names to the created data frame
+
+```{r ColumnNames}
+colnames(steps_each_day) <- c("date", "steps")
+```
+
+3 - Making a histogram of the total number of steps taken each day:
+```{r PlotTotalSteps}
+hist(as.numeric(steps_each_day$steps), breaks = 20, col = "blue", xlab = "Number of Steps", main= "Histogram of the Daily Steps")
+```
+
+median total number of steps taken per day:
+
+**Mean**
+```{r GetMeanSteps}
+mean(steps_each_day$steps)
+```
 
 
+**Median**
+```{r GetMedianSteps}
+median(steps_each_day$steps)
+```
 
-## Imputing missing values
+-----
+
+##What is the average daily activity pattern?
+
+-----
+
+1 - Calculating the average number of steps taken, averaged across all days:
+
+Calculating the average
+```{r StepPerInterval}
+steps_per_interval <- aggregate(activityData_noNull$steps, by=list(interval=activityData_noNull$interval), FUN=mean)
+```
+
+Adding columns names
+```{r AddColumnNames}
+colnames(steps_per_interval) <- c("interval", "average_steps")
+```
+
+Ploting the average daily activity pattern 
+```{r AverageDailyPatterns}
+plot(as.integer(levels(steps_per_interval$interval)), steps_per_interval$average_steps, type="l",
+     xlab = "Interval", ylab = "Average Number of Steps", main = "Average Daily Activity Pattern",  col ="blue")
+
+```
+
+2 - The 5-minute interval that contains the maximum number of steps:
+
+```{r max_steps}
+max_steps <- max(steps_per_interval$average_steps)
+
+```
+The maximum number of average steps was `r max_steps`.
+
+The 5-minute interval that contains the maximum number of `r max_steps` steps.
+```{r IntervalMaxSteps}
+intervale_max_steps<-steps_per_interval[which.max(steps_per_interval$average_steps),]$interval
+
+```
+The 5-minute interval that contains the maximum number of steps `r intervale_max_steps`
 
 
+288 Levels: 0 5 10 15 20 25 30 35 40 45 50 55 100 105 110 115 120 ... 2355
 
-## Are there differences in activity patterns between weekdays and weekends?
+So, the 5-minute interval that contains the maximum number of steps (`r round(max_steps)`) is the interval `r intervale_max_steps`.
+
+Inputing missing values
+1 - The total number of missing values in the dataset (for each variable):
+
+For the “steps” variable:
+```{r NullSteps}
+NA_Steps <- sum(is.na(as.character(activityData$steps)))
+```
+
+Total number of steps that were NA: **`r NA_Steps`** 
+
+For the “date” variable:
+```{r NullDates}
+NA_Date <-sum(is.na(as.character(activityData$date)))
+```
+
+Total number of Dates that were NA: **`r NA_Date`** 
+
+
+For the “interval” variable:
+```{r NullIntervals}
+NA_Intervals <-sum(is.na(as.character(activityData$interval)))
+```
+Total number of Intervals that were NA: **`r NA_Intervals`**
+
+Therefore, the total number of missing values in the dataset is **`r NA_Steps + NA_Date + NA_Intervals`**.
+
+2- The strategy for filling in all of the missing values in the dataset. Missing values are replaced by the mean of that 5-minute interval.
+
+finding the indices of missing values (NAs)
+```{r NullIndex}
+NA_index <- which(is.na(as.character(activityData$steps)))
+complete_data <- activityData
+```
+
+Inputing missing values using the mean for that 5-minute interval
+```{r CompleteData}
+complete_data[NA_index, ]$steps<-unlist(lapply(NA_index, FUN=function(NA_index){
+                steps_per_interval[activityData[NA_index,]$interval==steps_per_interval$interval,]$average_steps
+                }))
+```
+
+3 - Creating a new dataset that is equal to the original dataset but with the missing data filled in.
+
+Checking the complete data with the summary and str methods
+```{r SummaryCompleteData}
+summary(complete_data)
+
+str(complete_data)
+```
+
+4 - Making a histogram of the total number of steps taken each day for the complete dataset:
+
+Creating a data frame with the steps taken for each day
+```{r Steps_Completed_Each_Day}
+steps_each_day_complete <- aggregate(steps ~ date, data = complete_data, sum)
+```
+
+
+Adding column names to the created data frame
+```{r}
+colnames(steps_each_day_complete) <- c("date", "steps")
+```
+
+Making the histogram
+```{r PlotTotalStepsEachDay}
+hist(as.numeric(steps_each_day_complete$steps), breaks = 20, col = "red", xlab = "Number of Steps", main= "Total Number of Steps Taken Each Day")
+```
+
