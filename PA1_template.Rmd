@@ -3,7 +3,6 @@ title: "Reproducible Research: Peer Assessment 1"
 output: 
   html_document:
     keep_md: true
----
 
 author: "Lisa Rodgers"
 date: "May 9, 2016"
