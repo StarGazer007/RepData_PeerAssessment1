@@ -151,7 +151,14 @@ plot(x = 1:nrow(daily_patterns),
      ylab = "Average Steps")
      axis(1,labels=daily_patterns$interval[seq(1,288,12)],
      at = seq_along(daily_patterns$interval)[seq(1,288,12)])
+     
+  ## Saving to file
+  dev.copy(png, file="daily_patterns.png", height=480, width=600)
+  dev.off()     
+     
 ```
+
+ ![](https://github.com/StarGazer007/RepData_PeerAssessment1/blob/master/daily_patterns.png) 
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -229,9 +236,15 @@ hist(total_day_noNAs$total_steps,col="red",breaks=20,main="Total steps per day",
 abline(v=median(total_day$total_steps),lty=3, lwd=2, col="black")
 legend(legend="median","topright",lty=3,lwd=2,bty = "n")
 
+## Saving to file
+dev.copy(png, file="hist_Total_steps_per_day.png", height=600, width=800)
+dev.off()
+
 summary(total_day_noNAs$total_steps)
 
 ```
+ ![](https://github.com/StarGazer007/RepData_PeerAssessment1/blob/master/hist_Total_steps_per_day.png) 
+
 
 Recall before Imputing the missing values our 
 
@@ -283,9 +296,13 @@ ggplot(daily_patterns, aes(x=interval, y=average, color = day)) +
   geom_line() +
   facet_wrap(~day, ncol = 1, nrow=2) + ggtitle("Weekday vs Weekend Activity") + xlab("Time Intervals") + ylab("Average Steps") + theme(legend.position = "right")
 
+## Saving to file
+dev.copy(png, file="Weekday_vs_Weekend_Activity.png", height=600, width=800)
+dev.off()
+  
 
 ```
-
+ ![](https://github.com/StarGazer007/RepData_PeerAssessment1/blob/master/Weekday_vs_Weekend_Activity.png) 
 ----
 
 From the two plots it seems that the test object is more active earlier in the day during weekdays compared to weekends, but more active throughout the weekends compared with weekdays (probably because the object is working during the weekdays, hence moving less during the day).
