@@ -53,7 +53,7 @@ if(!file.exists('activity.csv')){
   unzip('activity.zip')
 }
 activityData <-  read.csv("activity.csv", header = TRUE, sep = ',', colClasses = c("numeric", "character", "integer"))
-                                                                               
+
 ```
 
 
@@ -104,8 +104,12 @@ abline(h=median_steps, lty=2,lwd=5, col="black")
 abline(h=mean_steps, lty=2,lwd=5, col="blue")
 text(x = 2,y=median_steps,pos=3,labels = "median")
 text(x = 2,y=mean_steps ,pos=1,labels = "mean",col="blue")
-```
 
+## Saving to file
+dev.copy(png, file="Total_Steps_Per_Day.png", height=600, width=800)
+dev.off() 
+```
+image: ![](RepData_PeerAssessment1/Total_steps_per_day.png) 
 
 2. Make a histogram of the total number of steps taken each day
 
