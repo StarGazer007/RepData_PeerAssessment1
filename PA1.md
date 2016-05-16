@@ -167,7 +167,7 @@ max_steps_interval <- filter(daily_patterns,average==max(average))
 
 ```
 
-Interval **<span style="background:#e6e6e6; color:red">  `r max_steps_interval$interval `</span>** contains on average the maximum number of steps at  **<span style="background:#e6e6e6; color:red">`r round(max_steps_interval$average) `</span>**.
+Interval **<span style="background:#e6e6e6; color:red">  835 </span>** contains on average the maximum number of steps at  **<span style="background:#e6e6e6; color:red">206</span>**.
 
 ----
 
