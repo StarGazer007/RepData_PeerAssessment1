@@ -93,9 +93,9 @@ median_steps <- median(total_day$total_steps, na.rm = TRUE)
 
 ```
 
-The mean steps per day is **`r round(mean_steps) `**
+The mean steps per day is **9354**
 
-The median steps per day is **`r round(median_steps) `**
+The median steps per day is **1.039510^{4}**
 
 ```{r}
 
