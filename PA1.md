@@ -121,8 +121,13 @@ hist(total_day$total_steps,col="yellow",breaks=20,main="TOTAL STEPS PER DAY",xla
 abline(v=median(total_day$total_steps),lty=3, lwd=2, col="black")
 legend(legend="median","topright",lty=3,lwd=2,bty = "n")
 
-```
+## Saving to file
+dev.copy(png, file="histogram_steps_per_day.png", height=480, width=600)
+dev.off()   
 
+
+```
+ ![](https://github.com/StarGazer007/RepData_PeerAssessment1/blob/master/histogram_steps_per_day.png) 
 
 ----
 
