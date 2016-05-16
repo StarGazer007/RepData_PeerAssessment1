@@ -106,6 +106,12 @@ text(x = 2,y=median_steps,pos=3,labels = "median")
 text(x = 2,y=mean_steps ,pos=1,labels = "mean",col="blue")
 ```
 
+```{r eval=FALSE, save_plot1}
+## Saving to file
+dev.copy(png, file="Total_Steps_Per_Day.png", height=600, width=800)
+dev.off() 
+```
+
 
 2. Make a histogram of the total number of steps taken each day
 
@@ -116,6 +122,13 @@ total_day <- filter(total_day, na < 1)
 hist(total_day$total_steps,col="yellow",breaks=20,main="TOTAL STEPS PER DAY",xlab="Steps per day")
 abline(v=median(total_day$total_steps),lty=3, lwd=2, col="black")
 legend(legend="median","topright",lty=3,lwd=2,bty = "n")
+```
+
+```{r eval=FALSE, save_plot2}
+## Saving to file
+dev.copy(png, file="histogram_steps_per_day.png", height=480, width=600)
+dev.off()   
+
 
 ```
 
@@ -142,6 +155,12 @@ plot(x = 1:nrow(daily_patterns),
      ylab = "Average Steps")
      axis(1,labels=daily_patterns$interval[seq(1,288,12)],
      at = seq_along(daily_patterns$interval)[seq(1,288,12)])
+```
+
+```{r eval=FALSE, save_plot3}
+   ## Saving to file
+     dev.copy(png, file="daily_patterns.png", height=480, width=600)
+     dev.off()  
 ```
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
@@ -220,6 +239,15 @@ hist(total_day_noNAs$total_steps,col="red",breaks=20,main="Total steps per day",
 abline(v=median(total_day$total_steps),lty=3, lwd=2, col="black")
 legend(legend="median","topright",lty=3,lwd=2,bty = "n")
 
+```
+
+```{r eval=FALSE, save_plot4}
+
+## Saving to file
+dev.copy(png, file="hist_Total_steps_per_day.png", height=600, width=800)
+dev.off()
+
+
 summary(total_day_noNAs$total_steps)
 
 ```
@@ -274,6 +302,12 @@ ggplot(daily_patterns, aes(x=interval, y=average, color = day)) +
   geom_line() +
   facet_wrap(~day, ncol = 1, nrow=2) + ggtitle("Weekday vs Weekend Activity") + xlab("Time Intervals") + ylab("Average Steps") + theme(legend.position = "right")
 
+```
+
+```{r eval=FALSE, save_plot5}
+## Saving to file
+dev.copy(png, file="Weekday_vs_Weekend_Activity.png", height=600, width=800)
+dev.off()
 
 ```
 
