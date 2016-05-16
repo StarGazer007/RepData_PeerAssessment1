@@ -76,6 +76,8 @@ summary(activityData)
 
 ### What is the average daily activity pattern?
 
+----
+
 1. Calculate the total number of steps everyday ignoring missing values.
 
 ```{R}
@@ -117,7 +119,12 @@ legend(legend="median","topright",lty=3,lwd=2,bty = "n")
 
 ```
 
+
+----
+
 ###What is the average daily activity pattern?
+
+----
 
 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
@@ -129,9 +136,10 @@ daily_patterns <- activityData %>%
 
 plot(x = 1:nrow(daily_patterns),
      y = daily_patterns$average,type = "l",
+      main = "Daily Patterns",
      col = "red", xaxt = "n",
-     xlab="Intervals", 
-     ylab = "Average Interval")
+     xlab="Time Intervals", 
+     ylab = "Average Steps")
      axis(1,labels=daily_patterns$interval[seq(1,288,12)],
      at = seq_along(daily_patterns$interval)[seq(1,288,12)])
 ```
@@ -145,8 +153,11 @@ max_steps_interval <- filter(daily_patterns,average==max(average))
 
 Interval **<span style="background:#e6e6e6; color:red">  `r max_steps_interval$interval `</span>** contains on average the maximum number of steps at  **<span style="background:#e6e6e6; color:red">`r round(max_steps_interval$average) `</span>**.
 
+----
 
 ###Imputing missing values
+
+----
 
 **Note** that there are a number of days/intervals where there are missing values (coded as NA). The presence of missing days may introduce bias into some calculations or summaries of the data.
 
@@ -188,7 +199,6 @@ head(activity_without_NAs)
 
 ```
 
-
 Verify if process of imputing missing values correctly preserved original values (lines with no NAs)
 ```{r}
 check <- filter(activity_without_NAs,!is.na(steps)) %>% 
@@ -213,7 +223,9 @@ legend(legend="median","topright",lty=3,lwd=2,bty = "n")
 summary(total_day_noNAs$total_steps)
 
 ```
+
 Recall before Imputing the missing values our 
+
 ```{r}
 mean_steps 
 median_steps
@@ -221,7 +233,12 @@ median_steps
 
 Imputing missing values, mean of the total number of steps taken per day increased by **`r round(mean(total_day_noNAs$total_steps)-mean_steps)`**. While median decreased **`r round(median_steps-median(total_day_noNAs$total_steps), digits=1)`**,compared to estimates from the first part (ingoring missing values). Imputing missing data resulted in increase of total daily number of steps (instead of each NAs we have average that is always >=0)
 
+
+----
+
 ### Are there differences in activity patterns between weekdays and weekends?
+
+----
 
 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day
 
@@ -265,3 +282,5 @@ ggplot(daily_patterns, aes(x=interval, y=average, color = day)) +
 From the two plots it seems that the test object is more active earlier in the day during weekdays compared to weekends, but more active throughout the weekends compared with weekdays (probably because the object is working during the weekdays, hence moving less during the day).
 
 ----
+
+
