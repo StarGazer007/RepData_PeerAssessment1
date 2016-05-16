@@ -109,7 +109,7 @@ text(x = 2,y=mean_steps ,pos=1,labels = "mean",col="blue")
 dev.copy(png, file="Total_Steps_Per_Day.png", height=600, width=800)
 dev.off() 
 ```
-image: ![](RepData_PeerAssessment1/Total_steps_per_day.png) 
+ ![](https://github.com/StarGazer007/RepData_PeerAssessment1/blob/master/Total_steps_per_day.png) 
 
 2. Make a histogram of the total number of steps taken each day
 
