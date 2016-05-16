@@ -253,7 +253,11 @@ mean_steps
 median_steps
 ```
 
-Imputing missing values, mean of the total number of steps taken per day increased by **`r round(mean(total_day_noNAs$total_steps)-mean_steps)`**. While median decreased **`r round(median_steps-median(total_day_noNAs$total_steps), digits=1)`**,compared to estimates from the first part (ingoring missing values). Imputing missing data resulted in increase of total daily number of steps (instead of each NAs we have average that is always >=0)
+mean_steps = 9354.23
+median_step = 10395
+
+
+Imputing missing values, mean of the total number of steps taken per day increased by **1412**. While median decreased **-371.2**,compared to estimates from the first part (ingoring missing values). Imputing missing data resulted in increase of total daily number of steps (instead of each NAs we have average that is always >=0)
 
 
 ----
