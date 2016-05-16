@@ -188,6 +188,7 @@ head(activity_without_NAs)
 
 ```
 
+
 Verify if process of imputing missing values correctly preserved original values (lines with no NAs)
 ```{r}
 check <- filter(activity_without_NAs,!is.na(steps)) %>% 
@@ -223,3 +224,44 @@ Imputing missing values, mean of the total number of steps taken per day increas
 ### Are there differences in activity patterns between weekdays and weekends?
 
 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day
+
+```{r}
+library(lubridate)
+is_weekday <-function(date){
+        if(wday(date)%in%c(1,7)) result<-"weekend"
+        else
+                result<-"weekday"
+        result
+}
+
+activity_without_NAs <- mutate(activity_without_NAs,date=ymd(date)) %>% 
+  mutate(day=sapply(date,is_weekday))
+
+table(activity_without_NAs$day)
+
+```
+
+2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis)
+
+```{r}
+library(ggplot2)
+
+daily_patterns <- activity_without_NAs %>%     
+  mutate(day=factor(day,levels=c("weekend","weekday")),steps_no_NAs=as.numeric(steps_no_NAs)) %>% 
+  group_by(interval,day) %>% summarise(average=mean(steps_no_NAs))
+
+head(daily_patterns)
+
+
+ggplot(daily_patterns, aes(x=interval, y=average, color = day)) +
+  geom_line() +
+  facet_wrap(~day, ncol = 1, nrow=2) + ggtitle("Weekday vs Weekend Activity") + xlab("Time Intervals") + ylab("Average Steps") + theme(legend.position = "right")
+
+
+```
+
+----
+
+From the two plots it seems that the test object is more active earlier in the day during weekdays compared to weekends, but more active throughout the weekends compared with weekdays (probably because the object is working during the weekdays, hence moving less during the day).
+
+----
