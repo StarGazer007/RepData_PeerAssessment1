@@ -25,7 +25,7 @@ In the report, we try to answer the following questions:
 
 -----
 
-## R preparations
+## R Preparations
 
 -----
 
